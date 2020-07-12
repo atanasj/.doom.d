@@ -42,7 +42,7 @@
 ;; ===========================================================
 
 (use-package! all-the-icons-ivy-rich
-  :after (counsel)
+  :after (counsel prescient help help-mode)
   :init (all-the-icons-ivy-rich-mode 1))
 
 (use-package! ivy-rich
@@ -61,17 +61,17 @@
 ;; (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 ;; (add-hook 'prog-mode-hook #'auto-fill-mode)
 ;; (add-hook 'occur-mode-hook #'visual-line-mode)
-;; (add-hook 'spss-mode-hook #'visual-line-mode)
-;; (add-hook 'spss-mode-hook #'display-line-numbers-mode)
-;; (add-hook 'spss-mode-hook #'auto-fill-mode)
+(add-hook 'spss-mode-hook #'visual-line-mode)
+(add-hook 'spss-mode-hook #'display-line-numbers-mode)
+(add-hook 'spss-mode-hook #'auto-fill-mode)
 
 ;; ;; the hs-mode made things too stuttery in rmd mode
 ;; (add-hook 'markdown-mode-hook #'hs-minor-mode)
 ;; (add-hook 'text-mode-hook #'rainbow-delimiters-mode)
 ;; (setq-default display-line-numbers-width 3)
 
-;; (add-to-list 'initial-frame-alist '(fullscreen . maximized))
-;; (add-to-list 'default-frame-alist '(fullscreen . fullheight))
+(add-to-list 'initial-frame-alist '(fullscreen . maximized))
+(add-to-list 'default-frame-alist '(fullscreen . fullheight))
 
 ;; (with-eval-after-load 'dashboard
 ;;   (setq dashboard-banner-logo-title "\"If you can't explain it simply, you don't understand it well enough.\""

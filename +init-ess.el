@@ -39,13 +39,10 @@
 
 ;;; Code:
 
-;; (require 'init-const)
-;; (require 'init-custom)
-;; (require 'init-funcs)
-
 ;; ===========================================================
 ;; R-IDE
 ;; ===========================================================
+
 (after! ess
   (set-popup-rule! "^\\*R" :ignore t))
 
@@ -151,11 +148,10 @@
 ;; basic polymode
 (use-package! polymode
   :ensure t
-  :init
+  :config
   (use-package! poly-R)
   (use-package! poly-markdown)
   (use-package! poly-noweb)
-  :config
   (add-to-list 'auto-mode-alist '("\\.md" . poly-markdown-mode))
   (add-to-list 'auto-mode-alist '("\\.Snw" . poly-noweb+r-mode))
   (add-to-list 'auto-mode-alist '("\\.Rnw" . poly-noweb+r-mode))
