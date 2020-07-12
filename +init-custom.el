@@ -2,7 +2,11 @@
   :load-path "./spss-mode"
   :init
   (require 'spss)
-  )
+  :config
+  (add-hook 'spss-mode-hook #'visual-line-mode)
+  (add-hook 'spss-mode-hook #'display-line-numbers-mode)
+  (add-hook 'spss-mode-hook #'auto-fill-mode)
+)
 
 ;; ===========================================================
 ;; Python
@@ -42,7 +46,8 @@
 ;; ===========================================================
 
 (use-package! all-the-icons-ivy-rich
-  :after (counsel prescient help help-mode)
+  ;; not sure if need to list help* here
+  :after (counsel prescient)
   :init (all-the-icons-ivy-rich-mode 1))
 
 (use-package! ivy-rich
@@ -52,8 +57,8 @@
 (use-package! all-the-icons-ibuffer
   :init (all-the-icons-ibuffer-mode 1))
 ;; colorise colour references
-;; (use-package! rainbow-mode
-;;   :config (rainbow-mode t))
+(use-package! rainbow-mode
+  :config (rainbow-mode t))
 
 ;; (add-hook 'text-mode-hook #'visual-line-mode)
 ;; (add-hook 'text-mode-hook #'display-line-numbers-mode)
@@ -61,13 +66,11 @@
 ;; (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 ;; (add-hook 'prog-mode-hook #'auto-fill-mode)
 ;; (add-hook 'occur-mode-hook #'visual-line-mode)
-(add-hook 'spss-mode-hook #'visual-line-mode)
-(add-hook 'spss-mode-hook #'display-line-numbers-mode)
-(add-hook 'spss-mode-hook #'auto-fill-mode)
 
 ;; ;; the hs-mode made things too stuttery in rmd mode
 ;; (add-hook 'markdown-mode-hook #'hs-minor-mode)
-;; (add-hook 'text-mode-hook #'rainbow-delimiters-mode)
+(add-hook 'text-mode-hook #'rainbow-delimiters-mode)
+(add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
 ;; (setq-default display-line-numbers-width 3)
 
 (add-to-list 'initial-frame-alist '(fullscreen . maximized))
@@ -229,8 +232,8 @@
 ;; add custom hl-todos and set colours
 (with-eval-after-load 'hl-todo
   (add-to-list 'hl-todo-keyword-faces '("ANCHOR" . "#DAF7A6"))
-  (add-to-list 'hl-todo-keyword-faces '("REVIEW" . "#5eff33"))
-  (add-to-list 'hl-todo-keyword-faces '("NOTE" . "#ff8e33"))
+  ;; (add-to-list 'hl-todo-keyword-faces '("REVIEW" . "#5eff33"))
+  ;; (add-to-list 'hl-todo-keyword-faces '("NOTE" . "#ff8e33"))
   ;; (add-to-list 'hl-todo-keyword-faces '("TODO" . "#ff3349"))
   (add-to-list 'hl-todo-keyword-faces '("SYNOPSIS" . "#4fd4ff"))
   (setq hl-todo-include-modes '(prog-mode text-mode markdown-mode))
@@ -247,8 +250,10 @@
 (with-eval-after-load 'lsp-ui-mode
   (setq lsp-ui-doc-position 'top))
 
-;; this makes lsp-mode work much snappier
-(with-eval-after-load 'lsp-mode
+(use-package! lsp-mode
+  :hook prog-mode
+  :config
+  ;; this makes lsp-mode work much snappier
   (setq lsp-idle-delay 0.5
         lsp-links-check-internal 0.9
         lsp-prefer-capf t
