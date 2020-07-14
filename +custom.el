@@ -85,18 +85,16 @@
   ;; :config (rainbow-mode t)
   )
 
-;; (add-hook 'text-mode-hook #'visual-line-mode)
-;; (add-hook 'text-mode-hook #'display-line-numbers-mode)
-;; (add-hook 'prog-mode-hook #'visual-line-mode)
-;; (add-hook 'prog-mode-hook #'display-line-numbers-mode)
-;; (add-hook 'prog-mode-hook #'auto-fill-mode)
-;; (add-hook 'occur-mode-hook #'visual-line-mode)
+(use-package! ace-window
+  :config
+  (setq aw-scope 'visible)
+  :custom-face
+  (aw-leading-char-face ((t (:inherit font-lock-keyword-face :bold t :height 3.0))))
+  (aw-mode-line-face ((t (:inherit mode-line-emphasis :bold t))))
+  )
 
-;; ;; the hs-mode made things too stuttery in rmd mode
-;; (add-hook 'markdown-mode-hook #'hs-minor-mode)
 (add-hook 'text-mode-hook #'rainbow-delimiters-mode)
 (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
-;; (setq-default display-line-numbers-width 3)
 
 (add-to-list 'initial-frame-alist '(fullscreen . maximized))
 (add-to-list 'default-frame-alist '(fullscreen . fullheight))
