@@ -97,6 +97,8 @@
 (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
 (add-hook 'text-mode-hook #'hs-minor-mode)
 (add-hook 'prog-mode-hook #'hs-minor-mode)
+(add-hook 'text-mode-hook #'hl-todo-mode)
+(add-hook 'prog-mode-hook #'hl-todo-mode)
 
 (add-to-list 'initial-frame-alist '(fullscreen . maximized))
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
