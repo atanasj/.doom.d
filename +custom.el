@@ -95,9 +95,11 @@
 
 (add-hook 'text-mode-hook #'rainbow-delimiters-mode)
 (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
+(add-hook 'text-mode-hook #'hs-minor-mode)
+(add-hook 'prog-mode-hook #'hs-minor-mode)
 
 (add-to-list 'initial-frame-alist '(fullscreen . maximized))
-(add-to-list 'default-frame-alist '(fullscreen . fullheight))
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
 
 ;; (with-eval-after-load 'dashboard
 ;;   (setq dashboard-banner-logo-title "\"If you can't explain it simply, you don't understand it well enough.\""
