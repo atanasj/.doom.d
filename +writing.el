@@ -174,7 +174,7 @@
   :config
   (setq reftex-cite-prompt-optional-args t)); Prompt for empty optional arguments in cite
 
-(provide '+init-writing)
+(provide '+writing)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; +init-writing.el ends here
+;;; +writing.el ends here

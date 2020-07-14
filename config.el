@@ -24,9 +24,9 @@
 ;; (setq doom-font (font-spec :family "monospace" :size 14))
 
 (setq
- doom-font (font-spec :family "SF Mono" :size 20)
- doom-big-font (font-spec :family "SF Mono" :size 36)
- doom-variable-pitch-font (font-spec :family "Avenir Next" :size 18)
+ doom-font (font-spec :family "SFMono Nerd Font" :size 14)
+ doom-big-font (font-spec :family "SFMono Nerd Font":size 30)
+ doom-variable-pitch-font (font-spec :family "Avenir Next LT Pro" :size 12)
  )
 
 ;; There are two ways to load a theme Both assume the theme is installed and
@@ -45,9 +45,9 @@
 ;; `nil' to disable it:
 (setq display-line-numbers-type 'visual)
 
-(load! "./+init-ess.el")
-(load! "./+init-writing.el")
-(load! "./+init-custom.el")
+(load! "+ess")
+(load! "+writing")
+(load! "+custom")
 
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;

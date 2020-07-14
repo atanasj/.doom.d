@@ -45,6 +45,30 @@
 ;; Visual-Changes
 ;; ===========================================================
 
+(use-package! xterm-color
+  :defines (compilation-environment
+            eshell-preoutput-filter-functions
+            eshell-output-filter-functions)
+  ;; :functions (compilation-filter my-advice-compilation-filter)
+  :init
+  ;; For shell and interpreters
+  (setenv "TERM" "xterm-256color")
+  (setq comint-output-filter-functions
+        (remove 'ansi-color-process-output comint-output-filter-functions))
+  (add-hook 'comint-preoutput-filter-functions 'xterm-color-filter)
+  (add-hook 'shell-mode-hook
+            (lambda ()
+              ;; Disable font-locking to improve performance
+              (font-lock-mode -1)
+              ;; Prevent font-locking from being re-enabled
+              (make-local-variable 'font-lock-function)
+              (setq font-lock-function #'ignore)))
+  )
+
+;; (use-package! electric-spacing
+;;   :init
+;;   (add-hook 'ess-r-mode-hook #'electric-spacing-mode))
+
 (use-package! all-the-icons-ivy-rich
   ;; not sure if need to list help* here
   :after (counsel prescient)
@@ -58,7 +82,8 @@
   :init (all-the-icons-ibuffer-mode 1))
 ;; colorise colour references
 (use-package! rainbow-mode
-  :config (rainbow-mode t))
+  ;; :config (rainbow-mode t)
+  )
 
 ;; (add-hook 'text-mode-hook #'visual-line-mode)
 ;; (add-hook 'text-mode-hook #'display-line-numbers-mode)
@@ -206,34 +231,34 @@
 ;; (add-hook 'prog-mode-hook
 ;;           (lambda (flyspell-prog-mode -1)))
 
-;; (add-hook 'prog-mode-hook #'wucuo-start)
-;; (add-hook 'text-mode-hook #'wucuo-start)
+;; (add-hook 'prog-mode-hook #')
+;; (add-hook 'text-mode-hook #')
 
 ;; stop asking for mc to confit multiple changes
 (setq mc/always-run-for-all t)
 
-;; setup grip-mode
-(with-eval-after-load 'grip
-  ;; Path to the grip binary
-  (setq grip-binary-path "/usr/local/bin/grip")
+;; ;; setup grip-mode
+;; (with-eval-after-load 'grip
+;;   ;; Path to the grip binary
+;;   (setq grip-binary-path "/usr/local/bin/grip")
 
-  ;; after every text change
-  (setq grip-update-after-change nil)
+;;   ;; after every text change
+;;   (setq grip-update-after-change nil)
 
-  ;; Use embedded webkit to preview
-  (setq grip-preview-use-webkit t)
+;;   ;; Use embedded webkit to preview
+;;   (setq grip-preview-use-webkit t)
 
-  (require 'auth-source)
-  (let ((credential (auth-source-user-and-password "api.github.com")))
-    (setq grip-github-user (car credential)
-          grip-github-password (cadr credential))))
+;;   (require 'auth-source)
+;;   (let ((credential (auth-source-user-and-password "api.github.com")))
+;;     (setq grip-github-user (car credential)
+;;           grip-github-password (cadr credential))))
 
 
 ;; add custom hl-todos and set colours
 (with-eval-after-load 'hl-todo
   (add-to-list 'hl-todo-keyword-faces '("ANCHOR" . "#DAF7A6"))
   ;; (add-to-list 'hl-todo-keyword-faces '("REVIEW" . "#5eff33"))
-  ;; (add-to-list 'hl-todo-keyword-faces '("NOTE" . "#ff8e33"))
+  (add-to-list 'hl-todo-keyword-faces '("KLUDGE" . "#ff8e33"))
   ;; (add-to-list 'hl-todo-keyword-faces '("TODO" . "#ff3349"))
   (add-to-list 'hl-todo-keyword-faces '("SYNOPSIS" . "#4fd4ff"))
   (setq hl-todo-include-modes '(prog-mode text-mode markdown-mode))
@@ -246,19 +271,39 @@
 ;;   (magit-todos-mode -1)
 ;;   )
 
-;; this works well for small screens
-(with-eval-after-load 'lsp-ui-mode
-  (setq lsp-ui-doc-position 'top))
 
 (use-package! lsp-mode
-  :hook prog-mode
+  :hook
+  (python-mode . lsp)
+  (ess-r-mode  . lsp)
+  (sh-mode     . lsp)
   :config
-  ;; this makes lsp-mode work much snappier
+  (lsp-register-client
+   (make-lsp-client :new-connection (lsp-stdio-connection "reason-language-server")
+                    :major-modes '(reason-mode)
+                    :notification-handlers (ht ("client/registerCapability" 'ignore))
+                    :priority 1
+                    :server-id 'reason-ls))
   (setq lsp-idle-delay 0.5
         lsp-links-check-internal 0.9
         lsp-prefer-capf t
         lsp-ui-sideline-delay 0.9)
-  )
+  :commands
+  lsp)
+
+(use-package! lsp-ui
+  ;; this works well for small screens
+  :config
+  (setq lsp-ui-doc-position 'top)
+  :commands
+  lsp-ui-mode)
+
+
+(use-package! company-lsp
+  :commands company-lsp)
+
+;; (use-package! company-box
+;;   :hook (company-mode . company-box-mode))
 
 ;; savehist was maxing cpu
 (with-eval-after-load 'savehist-mode
@@ -270,12 +315,12 @@
 ;;   (remove-hook 'after-init-hook 'org-roam-mode-hook t)
 ;;   )
 
-(with-eval-after-load 'company
+(after! company
   (define-key company-active-map (kbd "<return>") nil)
   (define-key company-active-map (kbd "RET") nil)
   (define-key company-active-map (kbd "<tab>") #'company-complete-selection))
 
-(provide 'init-custom-post)
+(provide '+custom)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; init-custom-post.el ends here
+;;; +custom.el ends here

@@ -44,20 +44,12 @@
 ;; ===========================================================
 
 (after! ess
-  (set-popup-rule! "^\\*R" :ignore t))
-
-(use-package! ess
-  :ensure t
-  :demand t
-  :init
-  (require 'ess-site)
-  ;; (require 'ess-view)
-  ;; (require 'ess-R-data-view)
-  ;; (require 'poly-R)
-  :config
+  (set-popup-rule! "^\\*R" :ignore t)
+  ;; HACK the below is not working as expected I think becase of the way doom
+  ;; manages windows and frames
   (setq display-buffer-alist
         `(("*R Dired"
-           (display-buffer-reuse-window display-buffer-in-side-window)
+           (display-buffer-reuse-window +popup-display-buffer-in-side-window-fn)
            (side . right)
            (slot . -1)
            (window-width . 0.33)
@@ -68,11 +60,20 @@
            (window-width . 0.5)
            (reusable-frames . nil))
           ("*Help"
-           (display-buffer-reuse-window display-buffer-in-side-window)
+           (display-buffer-reuse-window display-buffer-below-selected)
            (side . left)
            (slot . 1)
            (window-width . 0.33)
-           (reusable-frames . nil))))
+           (reusable-frames . nil)))
+        )
+  )
+
+(use-package! ess
+  :ensure t
+  :demand t
+  :init
+  (require 'ess-site)
+  :config
 
   (setq ess-set-style 'RStudio)
   ;; auto-width
@@ -140,6 +141,10 @@
    ;; ("C-x q" . ess-view-inspect-and-save-df)
    )
   )
+
+(map! :leader
+      :prefix "m"
+      "cv"     #'ess-view-inspect-df)
 
 ;; ===========================================================
 ;; Polymode
@@ -272,7 +277,7 @@
 (define-key ess-mode-map (kbd "C-c r") 'ess-eval-word)
 
 ;; provide ess configuration
-(provide '+init-ess)
+(provide '+ess)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; +init-ess.el ends here
+;;; +ess.el ends here
