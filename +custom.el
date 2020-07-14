@@ -111,6 +111,9 @@
 ;;         dashboard-items nil
 ;;         dashboard-set-navigator nil))
 
+(after! savehist
+  (savehist-mode -1))
+
 ;; ===========================================================
 ;; aj/defun
 ;; ===========================================================
