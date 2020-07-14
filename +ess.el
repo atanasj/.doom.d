@@ -47,6 +47,15 @@
   (set-popup-rule! "^\\*R" :ignore t)
   ;; HACK the below is not working as expected I think becase of the way doom
   ;; manages windows and frames
+
+  )
+
+(use-package! ess
+  :ensure t
+  :demand t
+  :init
+  (require 'ess-site)
+  :config
   (setq display-buffer-alist
         `(("*R Dired"
            (display-buffer-reuse-window +popup-display-buffer-in-side-window-fn)
@@ -66,15 +75,6 @@
            (window-width . 0.33)
            (reusable-frames . nil)))
         )
-  )
-
-(use-package! ess
-  :ensure t
-  :demand t
-  :init
-  (require 'ess-site)
-  :config
-
   (setq ess-set-style 'RStudio)
   ;; auto-width
   (setq ess-auto-width 'window)
