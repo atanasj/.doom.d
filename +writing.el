@@ -89,7 +89,7 @@
            (("text" "@%K%< [%A]%>")
             ("paren" "[%<%A %>%(@%K%; )%<, %A%>]")
             ("year" "[-@%K%< %A%>]")))))
-  (setq ivy-re-builders-alist '((t . ivy-prescient-non-fuzzy)))
+  ;; (setq ivy-re-builders-alist '((t . ivy-prescient-non-fuzzy)))
   :hook
   (ebib-entry-mode . visual-line-mode)
   :bind
@@ -123,6 +123,23 @@
 
 ;; use poper english
 (setq ispell-dictionary "british")
+
+(use-package! flyspell-correct
+  :after flyspell
+  :bind (:map flyspell-mode-map ("C-;" . flyspell-correct-wrapper)))
+
+(use-package! flyspell-correct-ivy
+  :after flyspell-correct)
+
+(after! markdown-mode
+  (defun aj/pandoc-flyspell-verify ()
+    (save-excursion
+      (forward-word -1)
+      (not (looking-back "@"))))
+  (add-hook 'markdown-mode-hook
+            '(lambda ()
+               (setq flyspell-generic-check-word-predicate 'aj/pandoc-flyspell-verify)))
+  )
 
 ;; ===========================================================
 ;; Latex-IDE

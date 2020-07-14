@@ -24,7 +24,7 @@
 ;; (setq doom-font (font-spec :family "monospace" :size 14))
 
 (setq
- doom-font (font-spec :family "SFMono Nerd Font" :size 14)
+ doom-font (font-spec :family "SFMono Nerd Font" :size 15)
  doom-big-font (font-spec :family "SFMono Nerd Font":size 30)
  doom-variable-pitch-font (font-spec :family "Avenir Next LT Pro" :size 12)
  )
@@ -44,6 +44,12 @@
 ;; If you want to change the style of line numbers, change this to `relative' or
 ;; `nil' to disable it:
 (setq display-line-numbers-type 'visual)
+
+(add-hook 'text-mode-hook #'auto-fill-mode)
+(add-hook 'prog-mode-hook #'auto-fill-mode)
+
+(setq ns-right-alternate-modifier 'none)
+(setq ns-function-modifier 'hyper)
 
 (load! "+ess")
 (load! "+writing")
@@ -70,6 +76,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages '(company-auctex auctex polymode ess-view ess)))
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

@@ -153,15 +153,6 @@
 (global-set-key (kbd "C-c t h") 'aj/iterm-goto-filedir-or-home)
 (global-set-key (kbd "C-c t n") 'aj/iterm-focus)
 
-(add-hook 'markdown-mode-hook
-          '(lambda ()
-             (setq flyspell-generic-check-word-predicate 'aj/pandoc-flyspell-verify)))
-
-(defun aj/pandoc-flyspell-verify ()
-  (save-excursion
-    (forward-word -1)
-    (not (looking-back "@"))))
-
 ;; pandoc wordcount
 (defun aj/pandoc-wc ()
   "Return wordcount of current buffer using pandoc wordcount.lua"
@@ -217,10 +208,15 @@
 ;; Miscellaneous
 ;; ===========================================================
 
-(use-package! flyspell-lazy
-  :after flyspell
-  :config
-  (flyspell-lazy-mode 1))
+;; (use-package! flyspell-lazy
+;;   :after flyspell
+;;   :config
+;;   (flyspell-lazy-mode 1))
+
+(after! flyspell
+  (require 'flyspell-lazy)
+   (flyspell-lazy-mode 1))
+
 
 ;; (add-hook 'text-mode-hook
 ;;           (lambda (flyspell-mode -1)))
