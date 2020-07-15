@@ -110,9 +110,7 @@
 ;;         dashboard-footer ""
 ;;         dashboard-items nil
 ;;         dashboard-set-navigator nil))
-
-(after! savehist
-  (savehist-mode -1))
+(remove-hook 'doom-first-input-hook #'savehist-mode)
 
 ;; ===========================================================
 ;; aj/defun

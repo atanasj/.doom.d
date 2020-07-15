@@ -103,6 +103,36 @@
     ("M-s-b" . ebib-insert-citation)
     ("C-c M-s-b" . ebib))))
 
+(use-package! openwith
+  :config
+  (setq openwith-associations
+        (list
+         (list (openwith-make-extension-regexp
+                '("mpg" "mpeg" "mp3" "mp4"
+                  "avi" "wmv" "wav" "mov" "flv"
+                  "ogm" "ogg" "mkv"))
+               "vlc"
+               '(file))
+         (list (openwith-make-extension-regexp
+                '("xbm" "pbm" "pgm" "ppm" "pnm"
+                  "png" "gif" "bmp" "tif" "jpeg" "jpg"))
+               "preview"
+               '(file))
+         (list (openwith-make-extension-regexp
+                '("doc" "docx" "ppt" "odt" "ods" "odg" "odp"))
+               "libreoffice"
+               '(file))
+         (list (openwith-make-extension-regexp
+                '("csv" "xls" "xlsx"))
+               "Microsoft Excel"
+               '(file))
+         (list (openwith-make-extension-regexp
+                '("pdf" "ps" "ps.gz" "dvi"))
+               "PDF Expert"
+               '(file))
+         ))
+  (openwith-mode 1)
+  )
 ;; distraction-free writing
 (use-package! writeroom-mode
   :config
