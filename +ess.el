@@ -47,7 +47,30 @@
   (set-popup-rule! "^\\*R" :ignore t)
   ;; HACK the below is not working as expected I think becase of the way doom
   ;; manages windows and frames
-
+  ;; (set-popup-rules!
+  ;;   ;; '(("^\\*R Dired" :slot 1 :vslot -1 :size #'+popup-shrink-to-fit)
+  ;;   ;;   ("^\\*R"  :side 'right :slot 1 :vslot -1 :select f)
+  ;;   ;;   ("^\\*Help" :slot -1 :vslot -2 :select t :ttl 0))
+  ;;   `(("*R Dired"
+  ;;      (display-buffer-reuse-window display-buffer-in-side-window)
+  ;;      (side . right)
+  ;;      (slot . -1)
+  ;;      (window-width . 0.33)
+  ;;      (reusable-frames . nil))
+  ;;     ("*R"
+  ;;      (display-buffer-reuse-window display-buffer-in-side-window)
+  ;;      (side . right)
+  ;;      (window-width . 0.5)
+  ;;      (reusable-frames . nil))
+  ;;     ("*Help"
+  ;;      (display-buffer-reuse-window display-buffer-below-selected)
+  ;;      (side . left)
+  ;;      (slot . 1)
+  ;;      (window-width . 0.33)
+  ;;      (reusable-frames . nil)))
+  ;;   ;; '(
+  ;;   ;;   ("^\\*Compil\\(?:ation\\|e-Log\\)" :size 0.3 :ttl 0 :quit t))
+  ;;     )
   )
 
 (use-package! ess
@@ -58,7 +81,7 @@
   :config
   (setq display-buffer-alist
         `(("*R Dired"
-           (display-buffer-reuse-window +popup-display-buffer-in-side-window-fn)
+           (display-buffer-reuse-window display-buffer-in-side-window)
            (side . right)
            (slot . -1)
            (window-width . 0.33)

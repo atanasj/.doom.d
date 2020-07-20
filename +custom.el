@@ -110,6 +110,7 @@
 ;;         dashboard-footer ""
 ;;         dashboard-items nil
 ;;         dashboard-set-navigator nil))
+
 (remove-hook 'doom-first-input-hook #'savehist-mode)
 
 ;; ===========================================================
