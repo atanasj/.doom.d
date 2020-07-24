@@ -277,6 +277,7 @@
   (python-mode . lsp)
   (ess-r-mode  . lsp)
   (sh-mode     . lsp)
+  (js-mode     . lsp)
   :config
   (lsp-register-client
    (make-lsp-client :new-connection (lsp-stdio-connection "reason-language-server")
