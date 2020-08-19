@@ -74,7 +74,7 @@
   )
 
 (use-package! ess
-  :ensure t
+  ;; :ensure t
   :demand t
   :init
   (require 'ess-site)
@@ -122,10 +122,6 @@
     "Insert a %>% and newline"
     (interactive)
     (insert " %>%"))
-  (defun tide-insert-assign ()
-    "Insert an assignment <-"
-    (interactive)
-    (insert "<- "))
   ;; set keybindings
   ;; insert pipe
   (define-key ess-r-mode-map (kbd "M-s-'") 'tide-insert-assign)
@@ -139,7 +135,7 @@
 ;; open a df in an external app
 ;; TODO need to find out how to display options vertically
 (use-package! ess-view
-  :ensure t
+  ;; :ensure t
   :after ess
   :diminish
   :config
@@ -175,7 +171,7 @@
 
 ;; basic polymode
 (use-package! polymode
-  :ensure t
+  ;; :ensure t
   :config
   (use-package! poly-R)
   (use-package! poly-markdown)

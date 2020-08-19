@@ -113,6 +113,19 @@
 
 (remove-hook 'doom-first-input-hook #'savehist-mode)
 
+;; https://github.com/hlissner/doom-emacs/issues/2225
+(use-package! zoom
+  :hook (doom-first-input  zoom-mode)
+  :config
+  (setq zoom-size '(0.7 . 0.7)
+        zoom-ignored-major-modes '(dired-mode vterm-mode help-mode helpful-mode rxt-help-mode help-mode-menu org-mode)
+        zoom-ignored-buffer-names '("*doom:scratch*" "*info*" "*helpful variable: argv*")
+        zoom-ignored-buffer-name-regexps '("^\\*calc" "\\*helpful variable: .*\\*")
+        zoom-ignore-predicates (list (lambda () (> (count-lines (point-min) (point-max)) 20)))))
+
+(use-package! transpose-frame
+  ;; :bind ("C-x |" .transpose-frame)
+  )
 ;; ===========================================================
 ;; aj/defun
 ;; ===========================================================
@@ -210,6 +223,14 @@
 ;; (with-eval-after-load 'company
 ;;   (define-key company-mode-map (kbd "C-M-s-/") 'company-files))
 
+;; (with-eval-after-load 'hideshow
+;;   (setq hs-hide-comments-when-hiding-all t))
+
+(map! :leader
+      (:prefix-map ("c" . "hide-show")
+       :desc "toggle hiding" "h" #'hs-toggle-hiding
+       ))
+
 ;; ===========================================================
 ;; Miscellaneous
 ;; ===========================================================
@@ -221,7 +242,7 @@
 
 (after! flyspell
   (require 'flyspell-lazy)
-   (flyspell-lazy-mode 1))
+  (flyspell-lazy-mode 1))
 
 
 ;; (add-hook 'text-mode-hook
@@ -259,7 +280,7 @@
   (add-to-list 'hl-todo-keyword-faces '("ANCHOR" . "#DAF7A6"))
   ;; (add-to-list 'hl-todo-keyword-faces '("REVIEW" . "#5eff33"))
   (add-to-list 'hl-todo-keyword-faces '("KLUDGE" . "#ff8e33"))
-  ;; (add-to-list 'hl-todo-keyword-faces '("TODO" . "#ff3349"))
+  (add-to-list 'hl-todo-keyword-faces '("DONE" . "#ff3349"))
   (add-to-list 'hl-todo-keyword-faces '("SYNOPSIS" . "#4fd4ff"))
   (setq hl-todo-include-modes '(prog-mode text-mode markdown-mode))
   )

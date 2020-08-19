@@ -212,11 +212,11 @@
                (reftex-mode))))
 
 (use-package! company-auctex
-  :ensure t
+  ;; :ensure t
   :init (company-auctex-init))
 
 (use-package! reftex
-  :ensure t
+  ;; :ensure t
   :defer t
   :config
   (setq reftex-cite-prompt-optional-args t)); Prompt for empty optional arguments in cite
