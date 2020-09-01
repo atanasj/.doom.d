@@ -72,14 +72,14 @@
 (use-package! all-the-icons-ivy-rich
   ;; not sure if need to list help* here
   :after (counsel prescient)
-  :init (all-the-icons-ivy-rich-mode 1))
+  :commands (all-the-icons-ivy-rich-mode))
 
 (use-package! ivy-rich
   :after all-the-icons-ivy-rich
-  :init (ivy-rich-mode 1))
+  :commands (ivy-rich-mode))
 
 (use-package! all-the-icons-ibuffer
-  :init (all-the-icons-ibuffer-mode 1))
+  :commands (all-the-icons-ibuffer-mode))
 ;; colorise colour references
 (use-package! rainbow-mode
   ;; :config (rainbow-mode t)
@@ -99,6 +99,7 @@
 (add-hook 'prog-mode-hook #'hs-minor-mode)
 (add-hook 'text-mode-hook #'hl-todo-mode)
 (add-hook 'prog-mode-hook #'hl-todo-mode)
+(add-hook 'text-mode-hook #'flyspell-mode)
 
 (add-to-list 'initial-frame-alist '(fullscreen . maximized))
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
@@ -293,7 +294,7 @@
 ;;   )
 
 
-(use-package! lsp-mode
+(use-package! lsp
   :hook
   (python-mode . lsp)
   (ess-r-mode  . lsp)
@@ -314,18 +315,18 @@
   lsp)
 
 (use-package! lsp-ui
-  ;; this works well for small screens
   :config
-  (setq lsp-ui-doc-position 'top)
-  :commands
-  lsp-ui-mode)
+  (setq lsp-ui-doc-position 'at-point)
+  :commands lsp-ui-mode
+  :hook (lsp-mode . lsp-ui-mode)
+  )
 
 
 (use-package! company-lsp
   :commands company-lsp)
 
-;; (use-package! company-box
-;;   :hook (company-mode . company-box-mode))
+(use-package! company-box
+  :hook (company-mode . company-box-mode))
 
 ;; savehist was maxing cpu
 (with-eval-after-load 'savehist-mode
