@@ -65,21 +65,18 @@
               (setq font-lock-function #'ignore)))
   )
 
-;; (use-package! electric-spacing
-;;   :init
-;;   (add-hook 'ess-r-mode-hook #'electric-spacing-mode))
-
 (use-package! all-the-icons-ivy-rich
   ;; not sure if need to list help* here
-  :after (counsel prescient)
-  :commands (all-the-icons-ivy-rich-mode))
+  ;; :after (counsel prescient)
+  :init (all-the-icons-ivy-rich-mode 1))
 
 (use-package! ivy-rich
-  :after all-the-icons-ivy-rich
-  :commands (ivy-rich-mode))
+  ;; :after all-the-icons-ivy-rich
+  :init (ivy-rich-mode 1))
 
 (use-package! all-the-icons-ibuffer
-  :commands (all-the-icons-ibuffer-mode))
+  :init (all-the-icons-ibuffer-mode 1))
+
 ;; colorise colour references
 (use-package! rainbow-mode
   ;; :config (rainbow-mode t)
@@ -114,19 +111,6 @@
 
 (remove-hook 'doom-first-input-hook #'savehist-mode)
 
-;; https://github.com/hlissner/doom-emacs/issues/2225
-(use-package! zoom
-  :hook (doom-first-input  zoom-mode)
-  :config
-  (setq zoom-size '(0.7 . 0.7)
-        zoom-ignored-major-modes '(dired-mode vterm-mode help-mode helpful-mode rxt-help-mode help-mode-menu org-mode)
-        zoom-ignored-buffer-names '("*doom:scratch*" "*info*" "*helpful variable: argv*")
-        zoom-ignored-buffer-name-regexps '("^\\*calc" "\\*helpful variable: .*\\*")
-        zoom-ignore-predicates (list (lambda () (> (count-lines (point-min) (point-max)) 20)))))
-
-(use-package! transpose-frame
-  ;; :bind ("C-x |" .transpose-frame)
-  )
 ;; ===========================================================
 ;; aj/defun
 ;; ===========================================================
@@ -300,6 +284,7 @@
   (ess-r-mode  . lsp)
   (sh-mode     . lsp)
   (js-mode     . lsp)
+  (yaml-mode   . lsp)
   :config
   (lsp-register-client
    (make-lsp-client :new-connection (lsp-stdio-connection "reason-language-server")
@@ -320,7 +305,6 @@
   :commands lsp-ui-mode
   :hook (lsp-mode . lsp-ui-mode)
   )
-
 
 (use-package! company-lsp
   :commands company-lsp)

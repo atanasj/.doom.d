@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: markdown table in bookdown rmardkown document
+# uuid:
+# key: rbooktab
+# condition: t
+# --
+\@ref(tab:${1:enumerate})
+
+
+Table: (tab:{$1}) $0.

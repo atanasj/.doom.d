@@ -41,11 +41,7 @@
 (package! all-the-icons-ivy-rich)
 (package! all-the-icons-ibuffer)
 (package! rainbow-mode)
-(package! electric-spacing)
 (package! openwith)
-(package! zoom)
-(package! transpose-frame)
-;; To install a package directly from a particular repo, you'll need to specify
 ;; a `:recipe'. You'll find documentation on what `:recipe' accepts here:
 ;; https://github.com/raxod502/straight.el#the-recipe-format
                                         ;(package! another-package

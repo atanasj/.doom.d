@@ -163,7 +163,15 @@
 
 (map! :leader
       :prefix "m"
-      "cv"     #'ess-view-inspect-df)
+      "cv"     #'ess-view-inspect-df
+      "cc"      'ess-tide-insert-chunk
+      )
+
+(use-package! ess-view-data
+  :load-path "./ess-view-data"
+  :after ess
+  :init
+  (require 'ess-view-data))
 
 ;; ===========================================================
 ;; Polymode
@@ -184,6 +192,12 @@
   (setq polymode-exporter-output-file-format "%s")
   )
 
+;; for use in Rmarkdown documents
+(use-package! markdown-mode
+  :config
+  (define-key markdown-mode-map (kbd "M-s-'") 'tide-insert-assign)
+  (define-key markdown-mode-map (kbd "M-s-\"") 'tide-insert-pipe)
+  )
 ;; ===========================================================
 ;; IDE Functions
 ;; ===========================================================

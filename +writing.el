@@ -47,7 +47,7 @@
   :bind
   ("C-s-j" . pandoc-jump-to-reference)
   :config
-  (setq pandoc-data-dir "/Users/atanas/.emacs.d/site-lisp/pandoc-mode/"
+  (setq pandoc-data-dir "/Users/atanas/.doom.d/pandoc-mode/"
         pandoc-citation-jump-function 'pandoc-open-in-ebib))
 
 ;; setup ebib to work with pandoc and more
@@ -154,12 +154,24 @@
 ;; use poper english
 (setq ispell-dictionary "british")
 
-(use-package! flyspell-correct
+(use-package flyspell-correct
   :after flyspell
   :bind (:map flyspell-mode-map ("C-;" . flyspell-correct-wrapper)))
 
-(use-package! flyspell-correct-ivy
+(use-package flyspell-correct-ivy
   :after flyspell-correct)
+
+;; (use-package! flyspell-correct
+;;   :after flyspell
+;;   :bind (:map flyspell-mode-map ("C-;" . flyspell-correct-wrapper)))
+
+;; (use-package flyspell-correct-ivy
+;;   :bind ("C-;" . flyspell-correct-wrapper)
+;;   :init
+;;   (setq flyspell-correct-interface #'flyspell-correct-ivy))
+
+;; (use-package! flyspell-correct-ivy
+;;   :after flyspell-correct)
 
 (after! markdown-mode
   (defun aj/pandoc-flyspell-verify ()
