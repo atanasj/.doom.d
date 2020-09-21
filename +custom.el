@@ -8,6 +8,29 @@
   (add-hook 'spss-mode-hook #'auto-fill-mode)
 )
 
+(use-package! mplus-mode
+  :load-path "./mplus-mode"
+  :init
+  (require 'mplus-mode)
+  :config
+  (add-hook 'mplus-mode-hook #'visual-line-mode)
+  (add-hook 'mplus-mode-hook #'display-line-numbers-mode)
+  ;; (add-hook 'mplus-mode-hook #'auto-fill-mode)
+  ;; config setup as per repo instructions
+  (setq auto-mode-alist (cons '("\\.inp" . mplus-mode) auto-mode-alist))
+  (add-hook 'mplus-mode-hook
+            (lambda ()
+              (require 'auto-complete-config)
+              (add-to-list 'ac-dictionary-directories "~/.emacs.d/es-ac-dict")
+              (setq-default ac-sources '(ac-source-abbrev
+                                         ac-source-dictionary
+                                         ac-source-words-in-same-mode-buffers))
+              (add-to-list 'ac-modes 'mplus-mode)
+              (add-hook 'mplus-hook (lambda () (auto-complete-mode 1))))
+            )
+  :hook
+  (mplus-mode . auto-complete-mode)
+  )
 ;; ===========================================================
 ;; Python
 ;; ===========================================================

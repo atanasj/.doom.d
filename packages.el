@@ -42,6 +42,7 @@
 (package! all-the-icons-ibuffer)
 (package! rainbow-mode)
 (package! openwith)
+(package! auto-complete)
 ;; a `:recipe'. You'll find documentation on what `:recipe' accepts here:
 ;; https://github.com/raxod502/straight.el#the-recipe-format
                                         ;(package! another-package
