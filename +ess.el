@@ -163,8 +163,9 @@
 
 (map! :leader
       :prefix "m"
-      "cv"     #'ess-view-inspect-df
-      "cc"      'ess-tide-insert-chunk
+      "cv"      #'ess-view-inspect-df
+      "cc"       'ess-tide-insert-chunk
+      "w"        'ess-eval-word
       )
 
 (use-package! ess-view-data
