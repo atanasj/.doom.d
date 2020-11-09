@@ -43,6 +43,10 @@
 (package! rainbow-mode)
 (package! openwith)
 (package! auto-complete)
+(package! vba-mode
+  :recipe (:host github :repo "ayanyan/vba-mode"))
+(package! vimrc-mode)
+(package! zoom)
 ;; a `:recipe'. You'll find documentation on what `:recipe' accepts here:
 ;; https://github.com/raxod502/straight.el#the-recipe-format
                                         ;(package! another-package

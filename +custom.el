@@ -90,8 +90,9 @@
 
 (use-package! all-the-icons-ivy-rich
   ;; not sure if need to list help* here
-  ;; :after (counsel prescient)
-  :init (all-the-icons-ivy-rich-mode 1))
+  :after (counsel-projectile)
+  :init (all-the-icons-ivy-rich-mode 1)
+  )
 
 (use-package! ivy-rich
   ;; :after all-the-icons-ivy-rich
@@ -111,6 +112,20 @@
   :custom-face
   (aw-leading-char-face ((t (:inherit font-lock-keyword-face :bold t :height 3.0))))
   (aw-mode-line-face ((t (:inherit mode-line-emphasis :bold t))))
+  )
+
+
+(use-package! zoom
+  :hook (doom-first-input . zoom-mode)
+  :config
+  (defun size-callback ()
+    (cond ((< (frame-pixel-width) 1280) '(0.618 . 0.618))
+          (t                            '(0.5 . 0.5))))
+  (setq zoom-size 'size-callback
+        zoom-ignored-major-modes '(dired-mode vterm-mode help-mode helpful-mode rxt-help-mode help-mode-menu org-mode)
+        zoom-ignored-buffer-names '("*doom:scratch*" "*info*" "*helpful variable: argv*")
+        zoom-ignored-buffer-name-regexps '("^\\*calc" "\\*helpful variable: .*\\*")
+        zoom-ignore-predicates (list (lambda () (< (count-lines (point-min) (point-max)) 20))))
   )
 
 (add-hook 'text-mode-hook #'rainbow-delimiters-mode)
@@ -240,8 +255,18 @@
        ))
 
 ;; ===========================================================
+;; VBA
+;; ===========================================================
+;;
+(use-package! vba-mode)
+
+;; ===========================================================
 ;; Miscellaneous
 ;; ===========================================================
+
+(use-package! vimrc-mode
+  :config
+  (add-to-list 'auto-mode-alist '("\\.vim\\(rc\\)?\\'" . vimrc-mode)))
 
 ;; (use-package! flyspell-lazy
 ;;   :after flyspell
@@ -308,6 +333,7 @@
   (sh-mode     . lsp)
   (js-mode     . lsp)
   (yaml-mode   . lsp)
+  (lua-mode    . lsp)
   :config
   (lsp-register-client
    (make-lsp-client :new-connection (lsp-stdio-connection "reason-language-server")
