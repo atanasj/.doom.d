@@ -95,8 +95,9 @@
   )
 
 (use-package! ivy-rich
-  ;; :after all-the-icons-ivy-rich
-  :init (ivy-rich-mode 1))
+  :after all-the-icons-ivy-rich
+  :init (ivy-rich-mode 1)
+  )
 
 (use-package! all-the-icons-ibuffer
   :init (all-the-icons-ibuffer-mode 1))
@@ -114,14 +115,15 @@
   (aw-mode-line-face ((t (:inherit mode-line-emphasis :bold t))))
   )
 
-
 (use-package! zoom
   :hook (doom-first-input . zoom-mode)
   :config
   (defun size-callback ()
+    "Set the zoom-size by frame width"
     (cond ((< (frame-pixel-width) 1280) '(0.618 . 0.618))
           (t                            '(0.5 . 0.5))))
   (setq zoom-size 'size-callback
+        ;; zoom-size '(0.618 . 0.618)
         zoom-ignored-major-modes '(dired-mode vterm-mode help-mode helpful-mode rxt-help-mode help-mode-menu org-mode)
         zoom-ignored-buffer-names '("*doom:scratch*" "*info*" "*helpful variable: argv*")
         zoom-ignored-buffer-name-regexps '("^\\*calc" "\\*helpful variable: .*\\*")
@@ -130,7 +132,7 @@
 
 (add-hook 'text-mode-hook #'rainbow-delimiters-mode)
 (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
-(add-hook 'text-mode-hook #'hs-minor-mode)
+(add-hook 'markdown-mode-hook #'hs-minor-mode)
 (add-hook 'prog-mode-hook #'hs-minor-mode)
 (add-hook 'text-mode-hook #'hl-todo-mode)
 (add-hook 'prog-mode-hook #'hl-todo-mode)
@@ -249,10 +251,10 @@
 ;; (with-eval-after-load 'hideshow
 ;;   (setq hs-hide-comments-when-hiding-all t))
 
-(map! :leader
-      (:prefix-map ("c" . "hide-show")
-       :desc "toggle hiding" "h" #'hs-toggle-hiding
-       ))
+;; (map! :leader
+;;       (:prefix-map ("c" . "hide-show")
+;;        :desc "toggle hiding" "h" #'hs-toggle-hiding
+;;        ))
 
 ;; ===========================================================
 ;; VBA
