@@ -47,6 +47,11 @@
   :recipe (:host github :repo "ayanyan/vba-mode"))
 (package! vimrc-mode)
 (package! zoom)
+(package! lsp-lua-emmy
+  :recipe (:host github :repo "phenix3443/lsp-lua-emmy"))
+(package! shell-pop)
+(package! eterm-256color)
+
 ;; a `:recipe'. You'll find documentation on what `:recipe' accepts here:
 ;; https://github.com/raxod502/straight.el#the-recipe-format
                                         ;(package! another-package

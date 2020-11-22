@@ -39,9 +39,9 @@
 
 ;;; Code:
 
-;; ===========================================================
+;; =============================================================================
 ;; R-IDE
-;; ===========================================================
+;; =============================================================================
 
 (after! ess
   (set-popup-rule! "^\\*R" :ignore t)
@@ -98,13 +98,16 @@
            (window-width . 0.33)
            (reusable-frames . nil)))
         )
-  (setq ess-set-style 'RStudio)
-  ;; auto-width
-  (setq ess-auto-width 'window)
-  ;; let lsp manage lintr
-  (setq ess-use-flymake nil)
-  ;; Stop R repl eval from blocking emacs.
-  (setq ess-eval-visibly 'nowait)
+  (setq ess-style 'RStudio
+        ;; auto-width
+        ess-auto-width 'window
+        ;; let lsp manage lintr
+        ess-use-flymake nil
+        ;; Stop R repl eval from blocking emacs.
+        ess-eval-visibly 'nowait
+        ess-use-eldoc nil
+        ess-use-company nil
+        )
 
   (setq ess-ask-for-ess-directory t
         ess-local-process-name "R"

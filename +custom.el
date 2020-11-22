@@ -120,8 +120,14 @@
   :config
   (defun size-callback ()
     "Set the zoom-size by frame width"
-    (cond ((< (frame-pixel-width) 1280) '(0.618 . 0.618))
-          (t                            '(0.5 . 0.5))))
+    (cond ((> (frame-pixel-width) 1280) '(90 . 0.618))
+          (t                            '(0.618 . 0.618)))) ; just balances the windows, do not zoom
+    ;; (cond ((< (frame-pixel-width) 1380) '(0.618 . 0.618))
+    ;;       (t                            '(0 . 0))) ; just balances the windows, do not zoom
+  ;; (defun size-callback ()
+  ;;   "Set the zoom-size by frame width"
+  ;;   (cond ((< (frame-pixel-width) 1280) '(0.618 . 0.618))
+  ;;         (t                            '(0.5 . 0.5))))
   (setq zoom-size 'size-callback
         ;; zoom-size '(0.618 . 0.618)
         zoom-ignored-major-modes '(dired-mode vterm-mode help-mode helpful-mode rxt-help-mode help-mode-menu org-mode)
@@ -150,6 +156,28 @@
 ;;         dashboard-set-navigator nil))
 
 (remove-hook 'doom-first-input-hook #'savehist-mode)
+
+
+;; ==============================================================================
+;; TERMINAL
+;; ==============================================================================
+(use-package! shell-pop
+  ;; :bind (("C-t" . shell-pop))
+  :config
+  (setq shell-pop-shell-type
+        (quote ("ansi-term" "*ansi-term*"
+                (lambda nil (vterm shell-pop-term-shell))))
+        )
+  (setq shell-pop-term-shell "/bin/zsh")
+  ;; need to do this manually or not picked up by `shell-pop'
+  (shell-pop--set-shell-type 'shell-pop-shell-type shell-pop-shell-type)
+  )
+
+(use-package! eterm-256color
+  :config
+  (add-hook 'term-mode-hook #'eterm-256color-mode)
+  (add-hook 'vterm-mode-hook #'eterm-256color-mode)
+  )
 
 ;; ===========================================================
 ;; aj/defun
@@ -226,6 +254,13 @@
 ;; ===========================================================
 ;; Keybindings
 ;; ===========================================================
+
+(map! :nv
+      "gX" 'evil-exchange-cancel
+      :leader
+      "tT" 'vterm
+      "tt" 'shell-pop
+      )
 
 ;; (with-eval-after-load 'undo-tree
 ;;   ;; make undotree work as expected
@@ -329,6 +364,7 @@
 
 
 (use-package! lsp
+  :after company
   :hook
   (python-mode . lsp)
   (ess-r-mode  . lsp)
@@ -363,6 +399,41 @@
 (use-package! company-box
   :hook (company-mode . company-box-mode))
 
+(use-package! lsp-lua-emmy
+  :demand
+  :ensure nil
+  ;; :load-path "~/github/lsp-lua-emmy"
+  :hook (lua-mode . lsp)
+  :config
+  (setq lsp-lua-emmy-jar-path (expand-file-name "EmmyLua-LS-all.jar" user-emacs-directory))
+  )
+
+(defun set-company-backends-for-lua()
+  "Set lua company backend."
+  (setq-local company-backends '(
+                                 (
+                                  company-lsp
+                                  company-lua
+                                  company-keywords
+                                  company-gtags
+                                  company-yasnippet
+                                  )
+                                 company-capf
+                                 company-dabbrev-code
+                                 company-files
+                                 )))
+
+(use-package! lua-mode
+  :ensure t
+  :mode "\\.lua$"
+  :interpreter "lua"
+  :hook (lua-mode . set-company-backends-for-lua)
+  :config
+  (setq lua-indent-level 4)
+  (setq lua-indent-string-contents t)
+  (setq lua-prefix-key nil)
+  )
+
 ;; savehist was maxing cpu
 (with-eval-after-load 'savehist-mode
   (setq history-length 10)
@@ -380,5 +451,5 @@
 
 (provide '+custom)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; +custom.el ends here

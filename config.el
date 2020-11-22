@@ -24,8 +24,8 @@
 ;; (setq doom-font (font-spec :family "monospace" :size 14))
 
 (setq
- doom-font (font-spec :family "SFMono Nerd Font" :size 13)
- doom-big-font (font-spec :family "SFMono Nerd Font":size 30)
+ doom-font (font-spec :family "SF Mono Powerline" :size 13)
+ doom-big-font (font-spec :family "SF Mono Powerline":size 30)
  doom-variable-pitch-font (font-spec :family "Avenir Next LT Pro" :size 12)
  )
 
