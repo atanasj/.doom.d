@@ -43,35 +43,9 @@
 ;; R-IDE
 ;; =============================================================================
 
-(after! ess
-  (set-popup-rule! "^\\*R" :ignore t)
-  ;; HACK the below is not working as expected I think becase of the way doom
-  ;; manages windows and frames
-  ;; (set-popup-rules!
-  ;;   ;; '(("^\\*R Dired" :slot 1 :vslot -1 :size #'+popup-shrink-to-fit)
-  ;;   ;;   ("^\\*R"  :side 'right :slot 1 :vslot -1 :select f)
-  ;;   ;;   ("^\\*Help" :slot -1 :vslot -2 :select t :ttl 0))
-  ;;   `(("*R Dired"
-  ;;      (display-buffer-reuse-window display-buffer-in-side-window)
-  ;;      (side . right)
-  ;;      (slot . -1)
-  ;;      (window-width . 0.33)
-  ;;      (reusable-frames . nil))
-  ;;     ("*R"
-  ;;      (display-buffer-reuse-window display-buffer-in-side-window)
-  ;;      (side . right)
-  ;;      (window-width . 0.5)
-  ;;      (reusable-frames . nil))
-  ;;     ("*Help"
-  ;;      (display-buffer-reuse-window display-buffer-below-selected)
-  ;;      (side . left)
-  ;;      (slot . 1)
-  ;;      (window-width . 0.33)
-  ;;      (reusable-frames . nil)))
-  ;;   ;; '(
-  ;;   ;;   ("^\\*Compil\\(?:ation\\|e-Log\\)" :size 0.3 :ttl 0 :quit t))
-  ;;     )
-  )
+;; (after! ess
+;;   )
+(set-popup-rule! "^\\*R" :ignore t)
 
 (use-package! ess
   ;; :ensure t
@@ -115,7 +89,7 @@
         comint-scroll-to-bottom-on-input t
         comint-scroll-to-bottom-on-output t
         comint-move-point-for-output t)
-
+  (setq tab-width 2)
   ;; insert pipes etc...
   (defun tide-insert-assign ()
     "Insert an assignment <-"
@@ -164,18 +138,56 @@
    )
   )
 
-(map! :leader
-      :prefix "m"
-      "cv"      #'ess-view-inspect-df
-      "cc"       'ess-tide-insert-chunk
-      "w"        'ess-eval-word
-      )
-
 (use-package! ess-view-data
   :load-path "./ess-view-data"
   :after ess
   :init
   (require 'ess-view-data))
+
+;; R helprs
+(defun pos-paragraph ()
+      (backward-paragraph)
+      (next-line 1)
+      (beginning-of-line)
+      (point))
+
+(defun highlight-piped-region ()
+  (let ((end (point))
+        (beg (pos-paragraph)))
+    (set-mark beg)
+    (goto-char end)
+    (end-of-line)
+    (deactivate-mark)
+    (setq last-point (point))
+    (goto-char end)
+    (buffer-substring-no-properties beg last-point)))
+
+(defun ess-run-partial-pipe ()
+  (interactive)
+  (let ((string-to-execute (highlight-piped-region)))
+    ;; https://stackoverflow.com/questions/65882345/replace-last-occurence-of-regexp-in-a-string-which-has-new-lines-replace-regexp/65882683#65882683
+    (ess-eval-linewise
+     (replace-regexp-in-string
+      ".+<-" "" (replace-regexp-in-string
+                 "\\(\\(.\\|\n\\)*\\)\\(%>%\\|\+\\) *\\'" "\\1" string-to-execute)))))
+
+(define-key ess-mode-map (kbd "<M-S-s-return>") 'ess-run-partial-pipe)
+
+;; keybindings
+;; ==============================================================================
+(map! (:localleader
+       :map ess-r-mode-map
+       :prefix-map ("c" . "ess")
+       "v"      #'ess-view-inspect-df
+       "c"       'ess-tide-insert-chunk
+       "w"       'ess-eval-word
+       "r"       'ess-run-partial-pipe)
+      )
+
+(map! :localleader
+      :map (polymode-minor-mode-map markdown-mode-map ess-r-mode-map)
+      "P" 'polymode-map
+      )
 
 ;; ===========================================================
 ;; Polymode
