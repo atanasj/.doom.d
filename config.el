@@ -34,6 +34,9 @@
 ;; `load-theme' function. These are the defaults.
 (setq doom-theme 'doom-one)
 
+;; (setq doom-themes-treemacs-theme "Default")
+(setq doom-themes-treemacs-theme "doom-colors")
+
 (setq +doom-dashboard-banner-dir
       (concat doom-private-dir "banners/")
       +doom-dashboard-banner-padding '(4 . 10))
@@ -54,6 +57,7 @@
 (load! "+ess")
 (load! "+writing")
 (load! "+custom")
+;; (load! "+mail")
 
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
