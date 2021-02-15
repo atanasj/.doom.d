@@ -38,6 +38,31 @@
 ;; Writing stuff
 ;; ===========================================================
 
+;; add font locks to markdown
+(defface my-markdown-code-face
+  '((t (:inherit markdown-inline-code-face)))
+  "Used for code words within text e.g., `\newpage`")
+
+;; this is not working, needs more work
+(font-lock-add-keywords
+ 'markdown-mode
+ '(
+   ("\\\\newpage" . 'my-markdown-code-face)
+   ))
+
+(defun my-markdown-compile-pandoc (beg end output-buffer)
+  "Compiles markdown with the pandoc program, if available.
+Returns its exit code."
+  (when (executable-find "pandoc")
+    (call-process-region
+     beg end shell-file-name nil output-buffer nil shell-command-switch
+     "pandoc -f markdown -t html --standalone --toc --toc-depth=2 \
+--filter=pandoc-crossref --citeproc --lua-filter pagebreak.lua \
+--metadata-file=/Users/atanas/.pandoc/doom.yml \
+--csl=/Users/atanas/.pandoc/csl/apa-old-doi-prefix.csl \
+--bibliography=/Users/atanas/.pandoc/MyLib.bib")))
+(advice-add #'+markdown-compile-pandoc :override #'my-markdown-compile-pandoc)
+
 ;; pandoc setup
 (use-package! pandoc-mode
   :init
@@ -103,6 +128,20 @@
     ("M-s-b" . ebib-insert-citation)
     ("C-c M-s-b" . ebib))))
 
+(map! (:localleader
+       :map (markdown-mode-map org-mode-map)
+       :prefix-map ("r" . "refs")
+       "i" 'ebib-insert-citation
+       "b" 'ebib
+       "j" 'pandoc-jump-to-reference)
+      ;; (:localleader
+      ;;  :map (RefTex-mode-map LaTex-mode-map tex-mode-map)
+      ;;  :prefix-map ("r" . "refs")
+      ;;  "i" 'ebib-insert-citation
+      ;;  "b" 'ebib)
+      )
+
+
 (use-package! openwith
   :config
   (setq openwith-associations
@@ -159,7 +198,10 @@
   :bind (:map flyspell-mode-map ("C-;" . flyspell-correct-wrapper)))
 
 (use-package flyspell-correct-ivy
-  :after flyspell-correct)
+  :after flyspell-correct
+  ;; :config
+  ;; (setq flyspell-correct-ivy--result '(save . ""))
+  )
 
 ;; (use-package! flyspell-correct
 ;;   :after flyspell
@@ -191,7 +233,7 @@
 (use-package! auctex-latexmk)
 
 (use-package! tex
-  :ensure auctex
+  ;; :ensure auctex
   :config
   ;; Indent items by two spaces.
   (setq LaTeX-item-indent 0)

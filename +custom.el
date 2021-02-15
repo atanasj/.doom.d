@@ -12,9 +12,9 @@
   :load-path "./mplus-mode"
   :init
   (require 'mplus-mode)
-  :config
   (add-hook 'mplus-mode-hook #'visual-line-mode)
   (add-hook 'mplus-mode-hook #'display-line-numbers-mode)
+
   ;; (add-hook 'mplus-mode-hook #'auto-fill-mode)
   ;; config setup as per repo instructions
   (setq auto-mode-alist (cons '("\\.inp" . mplus-mode) auto-mode-alist))
@@ -25,12 +25,17 @@
               (setq-default ac-sources '(ac-source-abbrev
                                          ac-source-dictionary
                                          ac-source-words-in-same-mode-buffers))
+              ;; (setq comment-start "!")
+              ;; (local-set-key (kbd "C-c C-u") 'uncomment-region)
               (add-to-list 'ac-modes 'mplus-mode)
               (add-hook 'mplus-hook (lambda () (auto-complete-mode 1))))
             )
+  ;; NOTE place holder until I learn how to add modes to pro-mode, etc.
+  (add-hook 'mplus-mode-hook #'hl-todo-mode)
   :hook
   (mplus-mode . auto-complete-mode)
   )
+
 ;; ===========================================================
 ;; Python
 ;; ===========================================================
@@ -88,6 +93,19 @@
               (setq font-lock-function #'ignore)))
   )
 
+
+(unless (display-graphic-p)
+  (require 'evil-terminal-cursor-changer)
+  (evil-terminal-cursor-changer-activate) ; or (etcc-on)
+  )
+
+(setq evil-motion-state-cursor 'box
+      evil-visual-state-cursor 'box
+      evil-normal-state-cursor 'box
+      evil-insert-state-cursor 'bar
+      evil-emacs-state-cursor  'hbar
+      )
+
 (use-package! all-the-icons-ivy-rich
   ;; not sure if need to list help* here
   :after (counsel-projectile)
@@ -102,6 +120,11 @@
 (use-package! all-the-icons-ibuffer
   :init (all-the-icons-ibuffer-mode 1))
 
+(use-package! all-the-icons-dired
+  :config
+  (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
+  )
+
 ;; colorise colour references
 (use-package! rainbow-mode
   ;; :config (rainbow-mode t)
@@ -115,25 +138,30 @@
   (aw-mode-line-face ((t (:inherit mode-line-emphasis :bold t))))
   )
 
+;; Switch to the new window after splitting
+(setq evil-split-window-below t
+      evil-vsplit-window-right t
+      )
+
 (use-package! zoom
   :hook (doom-first-input . zoom-mode)
   :config
   (defun size-callback ()
     "Set the zoom-size by frame width"
     (cond ((> (frame-pixel-width) 1280) '(90 . 0.618))
-          (t                            '(0.618 . 0.618)))) ; just balances the windows, do not zoom
-    ;; (cond ((< (frame-pixel-width) 1380) '(0.618 . 0.618))
-    ;;       (t                            '(0 . 0))) ; just balances the windows, do not zoom
-  ;; (defun size-callback ()
-  ;;   "Set the zoom-size by frame width"
-  ;;   (cond ((< (frame-pixel-width) 1280) '(0.618 . 0.618))
-  ;;         (t                            '(0.5 . 0.5))))
+          (t                            '(0.618 . 0.618))))
   (setq zoom-size 'size-callback
-        ;; zoom-size '(0.618 . 0.618)
         zoom-ignored-major-modes '(dired-mode vterm-mode help-mode helpful-mode rxt-help-mode help-mode-menu org-mode)
-        zoom-ignored-buffer-names '("*doom:scratch*" "*info*" "*helpful variable: argv*")
+        zoom-ignored-buffer-names '("*doom:scratch*" "*vterm*" "*info*" "*helpful variable: argv*")
         zoom-ignored-buffer-name-regexps '("^\\*calc" "\\*helpful variable: .*\\*")
         zoom-ignore-predicates (list (lambda () (< (count-lines (point-min) (point-max)) 20))))
+  )
+
+;; create binding for super-duper backspace
+(use-package! vterm
+  :config
+  (define-key vterm-mode-map (kbd "<M-backspace>")
+    (lambda () (interactive) (vterm-send-key (kbd "C-w"))))
   )
 
 (add-hook 'text-mode-hook #'rainbow-delimiters-mode)
@@ -157,27 +185,9 @@
 
 (remove-hook 'doom-first-input-hook #'savehist-mode)
 
-
 ;; ==============================================================================
 ;; TERMINAL
 ;; ==============================================================================
-(use-package! shell-pop
-  ;; :bind (("C-t" . shell-pop))
-  :config
-  (setq shell-pop-shell-type
-        (quote ("ansi-term" "*ansi-term*"
-                (lambda nil (vterm shell-pop-term-shell))))
-        )
-  (setq shell-pop-term-shell "/bin/zsh")
-  ;; need to do this manually or not picked up by `shell-pop'
-  (shell-pop--set-shell-type 'shell-pop-shell-type shell-pop-shell-type)
-  )
-
-(use-package! eterm-256color
-  :config
-  (add-hook 'term-mode-hook #'eterm-256color-mode)
-  (add-hook 'vterm-mode-hook #'eterm-256color-mode)
-  )
 
 ;; ===========================================================
 ;; aj/defun
@@ -257,24 +267,11 @@
 
 (map! :nv
       "gX" 'evil-exchange-cancel
-      :leader
-      "tT" 'vterm
-      "tt" 'shell-pop
+      ;; Window bindings
+      (:leader
+       :prefix "w"
+       :desc "zoom"   :n "z" #'zoom)
       )
-
-;; (with-eval-after-load 'undo-tree
-;;   ;; make undotree work as expected
-;;   (define-key undo-tree-map (kbd "C-/") 'undo-tree-undo)
-;;   (define-key undo-tree-map (kbd "C-_") nil)
-;;   (define-key undo-tree-map (kbd "C-?") 'undo-tree-redo)
-;;   (define-key undo-tree-map (kbd "M-_") nil)
-;;   (define-key undo-tree-map (kbd "C-z") 'undo-tree-undo)
-;;   (define-key undo-tree-map (kbd "C-S-z") 'undo-tree-redo))
-
-;; (with-eval-after-load 'drag-stuff
-;;   ;; make drag-stuff less annoying
-;;   (define-key drag-stuff-mode-map (kbd "<M-left>") nil)
-;;   (define-key drag-stuff-mode-map (kbd "<M-right>") nil))
 
 (with-eval-after-load 'ivy
   (define-key ivy-minibuffer-map (kbd "C-SPC") 'ivy-mark)
@@ -291,6 +288,18 @@
 ;;        :desc "toggle hiding" "h" #'hs-toggle-hiding
 ;;        ))
 
+;; ==============================================================================
+;; YASNIPPET
+;; ==============================================================================
+;; add yasnippet config
+(use-package! yasnippet
+  :config
+  (yas-global-mode 1)
+  (add-hook 'yas-minor-mode-hook (lambda ()
+                                   (yas-activate-extra-mode 'fundamental-mode)
+                                   ))
+  )
+
 ;; ===========================================================
 ;; VBA
 ;; ===========================================================
@@ -305,45 +314,12 @@
   :config
   (add-to-list 'auto-mode-alist '("\\.vim\\(rc\\)?\\'" . vimrc-mode)))
 
-;; (use-package! flyspell-lazy
-;;   :after flyspell
-;;   :config
-;;   (flyspell-lazy-mode 1))
-
 (after! flyspell
   (require 'flyspell-lazy)
   (flyspell-lazy-mode 1))
 
-
-;; (add-hook 'text-mode-hook
-;;           (lambda (flyspell-mode -1)))
-;; (add-hook 'outline-mode-hook
-;;           (lambda (flyspell-mode -1)))
-;; (add-hook 'prog-mode-hook
-;;           (lambda (flyspell-prog-mode -1)))
-
-;; (add-hook 'prog-mode-hook #')
-;; (add-hook 'text-mode-hook #')
-
 ;; stop asking for mc to confit multiple changes
 (setq mc/always-run-for-all t)
-
-;; ;; setup grip-mode
-;; (with-eval-after-load 'grip
-;;   ;; Path to the grip binary
-;;   (setq grip-binary-path "/usr/local/bin/grip")
-
-;;   ;; after every text change
-;;   (setq grip-update-after-change nil)
-
-;;   ;; Use embedded webkit to preview
-;;   (setq grip-preview-use-webkit t)
-
-;;   (require 'auth-source)
-;;   (let ((credential (auth-source-user-and-password "api.github.com")))
-;;     (setq grip-github-user (car credential)
-;;           grip-github-password (cadr credential))))
-
 
 ;; add custom hl-todos and set colours
 (with-eval-after-load 'hl-todo
@@ -354,14 +330,6 @@
   (add-to-list 'hl-todo-keyword-faces '("SYNOPSIS" . "#4fd4ff"))
   (setq hl-todo-include-modes '(prog-mode text-mode markdown-mode))
   )
-
-;; NOTE this is not workiing as expected
-;; TODO remove this code or correct config
-;; add to magit status view
-;; (with-eval-after-load 'magit
-;;   (magit-todos-mode -1)
-;;   )
-
 
 (use-package! lsp
   :after company
@@ -396,6 +364,8 @@
 (use-package! company-lsp
   :commands company-lsp)
 
+;; (add-to-list 'company-lsp-filter-candidates '(lsp-emmy-lua . t))
+
 (use-package! company-box
   :hook (company-mode . company-box-mode))
 
@@ -405,7 +375,7 @@
   ;; :load-path "~/github/lsp-lua-emmy"
   :hook (lua-mode . lsp)
   :config
-  (setq lsp-lua-emmy-jar-path (expand-file-name "EmmyLua-LS-all.jar" user-emacs-directory))
+  ;; (setq lsp-lua-emmy-jar-path "./emmmy-lua-lsp/EmmyLua-LS-all.jar")
   )
 
 (defun set-company-backends-for-lua()
@@ -424,7 +394,7 @@
                                  )))
 
 (use-package! lua-mode
-  :ensure t
+  ;; :ensure t
   :mode "\\.lua$"
   :interpreter "lua"
   :hook (lua-mode . set-company-backends-for-lua)
@@ -433,6 +403,25 @@
   (setq lua-indent-string-contents t)
   (setq lua-prefix-key nil)
   )
+
+(use-package! fennel-mode
+  :init
+  ;; (autoload 'fennel-mode "/path/to/fennel-mode/fennel-mode" nil t)
+  (add-to-list 'auto-mode-alist '("\\.fnl\\'" . fennel-mode))
+  )
+
+(defun on-spacehammer-edit-with-emacs (buffer-name pid title)
+  (with-current-buffer (get-buffer buffer-name)
+    ;; (spacemacs/evil-search-clear-highlight)
+    ;; (spacemacs/toggle-visual-line-navigation-on)
+    (markdown-mode)
+    (evil-insert 1)))
+
+(use-package! spacehammer
+  :demand t
+  :load-path "~/.spacehammer"
+  :config
+  (add-hook 'edit-with-emacs-hook 'on-spacehammer-edit-with-emacs))
 
 ;; savehist was maxing cpu
 (with-eval-after-load 'savehist-mode

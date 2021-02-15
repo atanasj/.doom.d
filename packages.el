@@ -17,13 +17,20 @@
 ;(setq doom-pinned-packages nil)
 
 ;; ...but to unpin a single package:
-;(package! pinned-package :pin nil)
+                                        ;(package! pinned-package :pin nil)
 
 
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
-;(package! some-package)
-(package! flyspell-correct)
-(package! flyspell-correct-ivy)
+                                        ;(package! some-package)
+(unpin! flyspell-correct)
+(package! flyspell-correct
+  :recipe (:host github
+           :repo "d12frosted/flyspell-correct"))
+(unpin! flyspell-correct-ivy)
+(package! flyspell-correct-ivy
+  :recipe (:host github
+           :repo "d12frosted/flyspell-correct"
+           :files ("flyspell-correct-ivy.el")))
 (package! flyspell-lazy)
 (package! writegood-mode)
 (package! xterm-color)
@@ -44,14 +51,23 @@
 (package! openwith)
 (package! auto-complete)
 (package! vba-mode
-  :recipe (:host github :repo "ayanyan/vba-mode"))
+  :recipe (:host github
+           :repo "ayanyan/vba-mode"))
 (package! vimrc-mode)
 (package! zoom)
 (package! lsp-lua-emmy
-  :recipe (:host github :repo "phenix3443/lsp-lua-emmy"))
-(package! shell-pop)
-(package! eterm-256color)
-
+  :recipe (:host github
+           :repo "phenix3443/lsp-lua-emmy"))
+(package! all-the-icons-dired
+  :recipe (:host github
+           :repo "jtbm37/all-the-icons-dired"))
+;; (package! mu4e-alert)
+(package! evil-terminal-cursor-changer
+  :recipe (:host github
+           :repo "7696122/evil-terminal-cursor-changer"))
+(package! fennel-mode
+  :recipe (:host gitlab
+           :repo "technomancy/fennel-mode"))
 ;; a `:recipe'. You'll find documentation on what `:recipe' accepts here:
 ;; https://github.com/raxod502/straight.el#the-recipe-format
                                         ;(package! another-package
