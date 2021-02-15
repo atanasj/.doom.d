@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: script-header-3
+# uuid: script-header-3
+# key: /head3
+# condition: t
+# --
+## ${1:SUBTITLE$(upcase yas-text)}
+## -----------------------------------------------------------------------------

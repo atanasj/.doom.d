@@ -1,0 +1,16 @@
+# -*- mode: snippet -*-
+# name: script-title-block
+# uuid: script-title-block
+# key: /title
+# condition: t
+# --
+################################################################################
+###
+### Author:      ${1:Atanas Janackovski}
+### Job Title:   ${2:Mental Health Data Analyst}
+### Copyright:   `(format-time-string "%Y")` ${3:Grand Pacific Health}
+### Version:     ${4:0.1}
+### Filename:    `(file-name-nondirectory (buffer-file-name))`
+### Description: ${5:Description}
+###
+################################################################################

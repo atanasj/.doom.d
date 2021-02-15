@@ -1,0 +1,24 @@
+# -*- mode: snippet -*-
+# name: rmd-reproduciblity-receipt
+# key: /reporec
+# --
+
+\newpage
+
+# Reproducibility
+
+<!-- taken from tweet: https://twitter.com/MilesMcBain/status/1263272935197782016 -->
+<details><summary> receipt</summary>
+
+\`\`\`{r reproducibility-receipt, results = "show"}
+
+## datetime
+Sys.time()
+
+## repository
+git2r::repository()
+
+## session info
+sessionInfo()
+
+\`\`\`

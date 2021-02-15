@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: rmd-chunk
+# key: /rchunk
+# condition: t
+# expand-env: ((yas/indent-line 'fixed) (yas/wrap-around-region 'nil))
+# --
+\`\`\`{r ${1:chunk-name}, include = ${2:TRUE/FALSE$(upcase yas-text)}, results = "${3:hide/show}", warning = ${4:FALSE/TRUE$(upcase yas-text)}}
+$0
+\`\`\`
