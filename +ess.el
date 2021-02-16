@@ -1,6 +1,6 @@
 ;;; init-package.el --- Initialize package configurations.	-*- lexical-binding: t -*-
 
-;; Copyright (C) 2020 Atanas Janackovski
+;; Copyright (C) 2021 Atanas Janackovski
 
 ;; Author: Atanas Janackovski <atanas.atanas@gmail.com>
 
